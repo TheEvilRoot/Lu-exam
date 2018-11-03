@@ -25,6 +25,7 @@ int main(){
 			matrix[i][j] = (i+1) * 10 + 1 + j;
 		}
 	}
+
 	printf("\n");
 	for (int i = 0; i < raw; i++){
 		for (int j = 0; j < columns; j++){
@@ -34,13 +35,25 @@ int main(){
 	}
 	printf("\n");
 	
-	for (int i =0; i < raw; i++){
-		for (int j = 0; j < columns-i; j++){
-			int temp = matrix[size - j - 1][size - i - 1];
-			matrix[size - j - 1][size - i - 1] = matrix[i][j];
-			matrix[i][j] = temp;
-		}
-	}
+	// for (int i =0; i < raw; i++){
+	// 	for (int j = 0; j < columns-i; j++){
+	// 		int temp = matrix[size - j - 1][size - i - 1];
+	// 		matrix[size - j - 1][size - i - 1] = matrix[i][j];
+	// 		matrix[i][j] = temp;
+	// 	}
+	// }
+
+	int r = 0, c = 0;
+	do {
+		c = 0;
+		do {
+			int temp = matrix[size - c - 1][size - r - 1];
+			matrix[size - c - 1][size - r - 1] = matrix[r][c];
+			matrix[r][c] = temp;
+			c++;
+		} while(c < columns - r);
+		r++;
+	} while (r < raw);
 
 	printf("\n");
 	for (int i = size-columns; i < size; i++){
