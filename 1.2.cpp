@@ -4,7 +4,7 @@
 #include "stdlib.h"
 int countOfNumbers(char*);
 int stringLength(char*);
-void transformOfString(int*, char*, int);
+int * transformString(char*, int*);
 int pow(int, int);
 
 int main(){
@@ -12,24 +12,12 @@ int main(){
 	char* string = (char*)malloc(size);
 	gets(string);
 	fflush(stdin);
-	int length = countOfNumbers(string);
-	int strLength = stringLength(string);
-	int*array = (int*)calloc(sizeof(int),length);
-	int counter = 0, numberOfElement = 0, isProcessing = 0;
-	for (int i = strLength - 1; i >= 0; i--){
-		if ((string[i] >= '0') && (string[i] <= '9')){
-			isProcessing = 1;
-			array[numberOfElement] += (string[i] - '0')*pow(10, counter);
-			counter++;
-		}
-		else if(isProcessing){
-			numberOfElement++;
-			counter = 0;
-			isProcessing = 0;
-		}
-	}
+
+	int length = 0;
+	int *numbers = transformString(string, &length);
+	
 	for (int i = length - 1; i >= 0; i--){
-		printf("%d\n", *(array + i));
+		printf("%d\n", *(numbers + i));
 	}
 	puts("");
 	return 0;
@@ -57,4 +45,25 @@ int pow(int base, int power) {
 		ret *= base;
 	}
 	return ret;
+}
+
+int * transformString(char *string, int *lengthPtr) {
+	int length = countOfNumbers(string);
+	int strLength = stringLength(string);
+	int*array = (int*)calloc(sizeof(int),length);
+	int counter = 0, numberOfElement = 0, isProcessing = 0;
+	for (int i = strLength - 1; i >= 0; i--){
+		if ((string[i] >= '0') && (string[i] <= '9')){
+			isProcessing = 1;
+			array[numberOfElement] += (string[i] - '0')*pow(10, counter);
+			counter++;
+		}
+		else if(isProcessing){
+			numberOfElement++;
+			counter = 0;
+			isProcessing = 0;
+		}
+	}
+	*lengthPtr = length;
+	return array;
 }
