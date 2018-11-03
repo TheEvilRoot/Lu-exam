@@ -1,65 +1,54 @@
 //Transpose matrix relative to the secondary diagonal with the help cycle do - while, not use additional matrixes or arrays
-#include "stdio.h"
-#include "stdlib.h"
-#include "ctime"
-
-int** initializationOfMatrix(int);
-void inputMatrix(int**,int,int);
-void outputMatrix(int**,int,int);
-void transposingMatrix(int**,int,int);
+#include <stdio.h>
+#include <stdlib.h>
 
 int main(){
-	srand(time(NULL));
-	int raw, columns, size;
-	while(! ( (scanf("%d",&raw)) && (scanf("%d",&columns)) ) ){
+	int raw, columns;
+	while(!scanf("%d",&raw) || !scanf("%d",&columns)){
 		printf("Wrong value of raw or column,please try again\n");
 		fflush(stdin);
+		fseek(stdin, 0, SEEK_END);
 	}
-	if (raw >= columns){
+
+	int size = columns;
+	if (raw > columns){
 		size = raw;
 	}
-	else{
-		size = columns;
-	}
-	system("cls");
-	int **matrix = initializationOfMatrix(size);
-	inputMatrix(matrix,raw,columns);
-	outputMatrix(matrix, raw, columns);
-	transposingMatrix(matrix, raw, columns);
-	outputMatrix(matrix, raw, columns);
-	return 0;
-}
-int** initializationOfMatrix(int size){
+
 	int **matrix = (int**)malloc(sizeof(int*)*size);
 	for (int i = 0; i<size; i++){
 		matrix[i] = (int*)malloc(sizeof(int)*size);
 	}
-	return matrix;
-}
-void inputMatrix(int**matrix,int raw,int columns){
+
 	for (int i = 0; i < raw; i++){
 		for (int j = 0; j < columns; j++){
-			matrix[i][j]=rand()%100+1;
+			matrix[i][j] = (i+1) * 10 + 1 + j;
 		}
 	}
-}
-void outputMatrix(int**matrix, int raw, int columns){
-	puts("");
+	printf("\n");
 	for (int i = 0; i < raw; i++){
 		for (int j = 0; j < columns; j++){
-			printf("%4d", matrix[i][j]);
+			printf("%3d", matrix[i][j]);
 		}
-		puts("");
+		printf("\n");
 	}
-	puts("");
-}
-void transposingMatrix(int**matrix, int raw, int columns){
-	int temp;
+	printf("\n");
+	
 	for (int i =0; i < raw; i++){
 		for (int j = 0; j < columns-i; j++){
-			temp = matrix[i][j];
-			matrix[i][j] = matrix[raw-i-1][columns-j-1];
-			matrix[raw-i-1][columns-j-1] = temp;
+			int temp = matrix[size - j - 1][size - i - 1];
+			matrix[size - j - 1][size - i - 1] = matrix[i][j];
+			matrix[i][j] = temp;
 		}
 	}
+
+	printf("\n");
+	for (int i = size-columns; i < size; i++){
+		for (int j = size-raw; j < size; j++){
+			printf("%3d", matrix[i][j]);
+		}
+		printf("\n");
+	}
+	printf("\n");
+	return 0;
 }
