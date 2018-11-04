@@ -1,5 +1,6 @@
 #include "stdio.h"
 #include "stdlib.h"
+#include "ctime"
 
 int **initializationOfMatrix(int, int);
 void inputMatrix(int**, int, int);
@@ -7,6 +8,7 @@ void outputMatrix(int**, int, int);
 int** matrixMultiplication(int**, int**, int**, int, int, int);
 
 int main(){
+	srand(time(NULL));
 	int rows1, rows2, columns1, columns2;
 	do{
 		scanf("%d", &rows1);
@@ -25,7 +27,7 @@ int main(){
 	outputMatrix(matrix1, rows1, columns1);
 	outputMatrix(matrix2, rows2, columns2);
 
-	matrix3=matrixMultiplication(matrix1, matrix2, matrix3, rows1, columns2, columns1);
+	matrix3 = matrixMultiplication(matrix1, matrix2, matrix3, rows1, columns2, columns1);
 
 	outputMatrix(matrix3, rows1, columns2);
 
@@ -58,14 +60,20 @@ void outputMatrix(int** matrix, int rows, int columns){
 	puts("");
 }
 
-int** matrixMultiplication(int** matrix1, int**matrix2,int** matrix3, int rows1 , int columns2,int columns1){
-	for (int i = 0; i < rows1; i++){
-		for (int j = 0; j < columns2; j++){
+int** matrixMultiplication(int** matrix1, int**matrix2, int** matrix3, int rows1, int columns2, int columns1){
+	int i = 0;
+	do{
+		int j = 0;
+		do{
 			matrix3[i][j] = 0;
-			for (int k = 0; k < columns1; k++){
+			int k = 0;
+			do{
 				matrix3[i][j] += matrix1[i][k] * matrix2[k][j];
-			}
-		}
-	}
+				k++;
+			}while (k < columns1);
+			j++;
+		} while (j < columns2);
+		i++;
+	} while (i < rows1);
 	return matrix3;
 }
